@@ -73,7 +73,7 @@ const prompt = ai.definePrompt({
   Also include a concise, one-line description of what the company is all about.
   {{/if}}
 
-  Ensure all generated data is plausible and realistic for the given query. Do not return empty fields unless specified.
+  Ensure all generated data is plausible and realistic for the given query. Do not return empty fields unless specified. All generated URLs and contact info must be fictional but realistic-looking.
   
   Return the list of leads in the specified JSON format.
   `,
