@@ -189,10 +189,13 @@ export function SearchForm({ setIsLoading, setLeads, setSearchQuery, setShowSugg
     setIsLoading(true);
     setLeads([]);
     setSearchQuery(values.keyword);
-    setProgress(10);
-    setProgressMessage(`Generating ${values.numLeads.toLocaleString()} leads...`);
+    setProgress(0);
+    setProgressMessage('Starting generation...');
     
     try {
+      setProgress(10);
+      setProgressMessage(`Generating ${values.numLeads.toLocaleString()} leads...`);
+
       const result = await generateLeads({
           query: values.keyword,
           numLeads: values.numLeads,
@@ -208,6 +211,8 @@ export function SearchForm({ setIsLoading, setLeads, setSearchQuery, setShowSugg
           id: `${Date.now()}-${index}`,
       }));
       
+      setProgress(100);
+      setProgressMessage(`Updating quota...`);
       await updateQuotaInFirestore(newLeads.length);
       setLeads(newLeads);
       
@@ -215,9 +220,6 @@ export function SearchForm({ setIsLoading, setLeads, setSearchQuery, setShowSugg
           title: 'Search Complete',
           description: `We've found and processed ${newLeads.length.toLocaleString()} potential leads.`,
       });
-
-      setProgress(100);
-      setProgressMessage(`Complete! ${newLeads.length.toLocaleString()} leads found.`);
 
     } catch (error: any) {
        toast({
